@@ -16,20 +16,20 @@ class Map
   end
 
   def start_point_y
-    index = 0
-    @map.map do |latitude|
-      index = latitude if latitude.any? { |elem| elem == '0' }
+    element_index = 0
+    @map.each do |latitude|
+      element_index = latitude if latitude.any? { |elem| elem == '0' }
     end
-    start_point_y = @map.index index
+    start_point_y = @map.index element_index
     start_point_y
   end
 
   def end_point_y
-    index = nil
-    @map.map do |latitude|
-      index = latitude if latitude.any? { |elem| elem == 'x' }
+    element_index = nil
+    @map.each do |latitude|
+      element_index = latitude if latitude.any? { |elem| elem == 'x' }
     end
-    end_point_y = @map.index index
+    end_point_y = @map.index element_index
     end_point_y
   end
 
@@ -63,12 +63,7 @@ class Map
   def integer_map
     @map = @map.map do |longitude|
     longitude.map do |element|
-      case element
-      when 's'
-        element = -2
-      else
-        element = -1
-      end
+      element = element == 's' ? -2 : -1
       element
     end
     end
@@ -76,11 +71,7 @@ class Map
 
   def wave(step, y)
     until y >= 10
-      x = 0
-      until x >= 10
-        neighbors(x, y, step)
-        x += 1
-      end
+      10.times { |x| neighbors(x, y, step)}
       y += 1
     end
   end
